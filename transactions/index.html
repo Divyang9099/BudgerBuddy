@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Transactions Table</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
+    <script src="../script-main.js"></script>
+    <link rel="stylesheet" href="../styles-addtxn.css">
+  </head>
+  <body>
+
+    
+    <div class="navbar">
+      <a class="brand-name" href="#">BUDGETBUDDY</a>
+      <div class="nav-links">
+        <a href="../">Dashboard</a>
+        <a href="../transactions/">Transactions</a>
+        <a href="../reports/">Reports</a>
+      </div>
+      <div class="nav-icons">
+        <i class="bi bi-brightness-high" id="theme-toggle"></i>
+        <i class="bi bi-gear-fill"></i>
+        <i class="bi bi-person-circle"></i>
+      </div>
+    </div>
+    <div id="modalOverlay" class="modal-overlay" style="display: none;">
+      <div class="modal-content">
+  
+        
+        <!-- Your Transaction Form -->
+        <div class="container-addtxn">
+          <div class="card-addtxn">
+            <div class="temp" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <h2>Add Transaction</h2>
+              <div id="closeModal" class="close">&times;</div>
+            </div>
+            <form id="transactionForm" onsubmit="event.preventDefault(); handleSubmit()">
+              <div class="type-toggle">
+                <button type="button" class="active income-btn" onclick="toggleType('income')">Income</button>
+                <button type="button" onclick="toggleType('expense')" class="expense-btn">Expense</button>
+              </div>
+              <div class="form-group">
+                <h5>Title</h5>
+                <input type="text" id="title" placeholder="Title" required>
+              </div>
+              <div class="form-group">
+                <h5>Description</h5>
+                <textarea id="description" placeholder="Description"></textarea>
+              </div>
+              <div class="form-group">
+                <h5>Amount</h5>
+                <input type="number" id="amount" placeholder="Amount" required>
+              </div>
+              <div class="form-group">
+                <h5>Date</h5>
+                <input type="date" id="date" value="<?php echo date('Y-m-d'); ?>">
+              </div>
+              <button type="submit" class="btn1">Add Transaction</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="main">
+      
+  
+      <div class="main-sec-1">
+        <div class="dashboard-text">Transactions</div>
+        <div class="main-sub-1">
+          <p class="main-date"></p>
+          <button class="add-txn"  id="openModal">
+            <i class="bi bi-plus" ></i>
+            <span >Add transaction</span>
+          </button>
+        </div>
+      </div>
+      
+      <div class="container">
+        <table class="transactions-table">
+          <thead>
+            <tr class="table-header">
+              <th>Title</th>
+              <th>Description</th>
+              <th>Amount</th>
+              <th>Date</th>
+              <th>Type</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="transactionsBody"></tbody>
+        </table>
+      </div>
+    </div>
+    <script src="script.js"></script>
+    <script src="../script-addtxn.js"></script>
+  </body>
+</html>

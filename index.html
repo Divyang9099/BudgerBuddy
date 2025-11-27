@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BudgetBuddy</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles-addtxn.css">
+  <script src="script-addtxn.js"></script>
+  <script src="script-main.js"></script>
+</head>
+<body>
+  
+  <div class="navbar">
+    <a class="brand-name" href="#">BUDGETBUDDY</a>
+    <div class="nav-links">
+      <a href="#">Dashboard</a>
+      <a href="/transactions/">Transactions</a>
+      <a href="/reports/">Reports</a>
+    </div>
+    <div class="nav-icons">
+      <i class="bi bi-brightness-high" id="theme-toggle"></i>
+      <i class="bi bi-gear-fill" ></i>
+      <i class="bi bi-person-circle"></i>
+
+    </div>
+  </div>
+  <div id="modalOverlay" class="modal-overlay" style="display: none;">
+    <div class="modal-content">
+
+      
+      <!-- Your Transaction Form -->
+      <div class="container-addtxn">
+        <div class="card-addtxn">
+          <div class="temp" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <h2>Add Transaction</h2>
+            <div id="closeModal" class="close">&times;</div>
+          </div>
+          <form id="transactionForm" onsubmit="event.preventDefault(); handleSubmit()">
+            <div class="type-toggle">
+              <button type="button" class="active income-btn" onclick="toggleType('income')">Income</button>
+              <button type="button" onclick="toggleType('expense')" class="expense-btn">Expense</button>
+            </div>
+            <div class="form-group">
+              <h5>Title</h5>
+              <input type="text" id="title" placeholder="Title" required>
+            </div>
+            <div class="form-group">
+              <h5>Description</h5>
+              <textarea id="description" placeholder="Description"></textarea>
+            </div>
+            <div class="form-group">
+              <h5>Amount</h5>
+              <input type="number" id="amount" placeholder="Amount" required>
+            </div>
+            <div class="form-group">
+              <h5>Date</h5>
+              <input type="date" id="date" value="<?php echo date('Y-m-d'); ?>">
+            </div>
+            <button type="submit" class="btn1">Add Transaction</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="main">
+    <div class="main-sec-1">
+      <div class="dashboard-text">Dashboard</div>
+      <div class="main-sub-1">
+        <p class="main-date"></p>
+        <button class="add-txn btn" id="openModal">
+          <i class="bi bi-plus" ></i>
+          <span >Add transaction</span>
+        </button>
+      </div>
+    </div>
+    <div class="main-sec-2">
+      <div class="sub-sec-1">
+        <div class="total-card">
+          <div class="total-text">Current wallet balance</div>
+          <div class="total-amount">
+            <i class="bi bi-currency-rupee"></i>
+            <span class="current-balance" id="net-balance">+200000.28</span>
+          </div>
+          <div>
+            <i class="bi bi-caret-down-square period-percent"></i>
+            <span class="period-percent">-5%</span>
+            <span class="temp1">per week</span>
+          </div>
+        </div>
+        <div class="total-card">
+          <div class="total-text">Total Income</div>
+          <div class="total-amount">
+            <i class="bi bi-currency-rupee"></i>
+            <span class="total-income" id="total-income">+150000.90</span>
+          </div>
+          <div>
+            <i class="bi bi-caret-down-square period-percent"></i>
+            <span class="period-percent">-5%</span>
+            <span class="temp1">per week</span>
+          </div>
+        </div>
+        <div class="total-card">
+          <div class="total-text" >Total Expense</div>
+          <div class="total-amount">
+            <i class="bi bi-currency-rupee"></i>
+            <span class="total-expense" id="total-expense">-1000.12</span>
+          </div>
+          <div>
+            <i class="bi bi-caret-down-square period-percent"></i>
+            <span class="period-percent">-5%</span>
+            <span class="temp1">per week</span>
+          </div>
+        </div>
+        <div class="total-card">
+          <div class="total-text">Total transactions this month</div>
+          <div class="total-amount">
+            <span class="period-income" id="period-income">120</span>
+            
+          </div>
+          
+        </div>
+      </div>
+      <div class="sub-sec-2">
+        <div class="spending-container">
+          <div class="header1">
+              <h2 class="title">Spending Summary</h2>
+              <div class="time-filter">
+                  <button class="active" id="d">D</button>
+                  <button id="w">W</button>
+                  <button id="m" >M</button>
+              </div>
+          </div>
+          <div class="chart-container">
+              <canvas id="spendingChart"></canvas>
+          </div>
+      
+        </div>
+        <div class="recents">
+          <div class="header2">
+            <h2 class="title">Recent transactions</h2>
+            <div class="txns">
+              
+
+            <div class="txn" id="txn0"></div>
+            <div class="txn"  id="txn1"></div>
+            <div id="txn2" class="txn"></div>
+            <div id="txn3" class="txn"></div>
+        </div>
+        </div>
+      
+      </div>
+    </div>
+    <div class="main-sec-3">
+      
+    </div>
+  </div>
+
+  
+
+  <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+  const ctx = document.getElementById('spendingChart').getContext('2d');
+        // Add click event listeners to time filter buttons
+    const buttons = document.querySelectorAll('.time-filter button');
+    buttons.forEach(button => {
+        button.addEventListener('click', () => {
+            buttons.forEach(b => b.classList.remove('active'));
+            button.classList.add('active');
+            check()
+            chart_draw();
+        });
+      
+    });
+
+    
+    let chart;
+    let yaxis=[];
+
+    for(let i=0;i<transactions.length;i++){
+      yaxis.push(transactions[i].amount);
+    }
+    let xaxis=[];
+    // xaxis=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    function check(){
+      chart.destroy();
+      day=document.getElementById('d');
+      week=document.getElementById('w');
+      month=document.getElementById('m');
+
+
+    
+      if(day.classList.contains('active')){
+        dateElement = document.querySelector('.main-date');
+        const options = { day: 'numeric'};
+        let tempdate = new Date().toLocaleDateString('en-US', options);
+        tempdate=parseInt(tempdate);
+
+        xaxis=[ `${tempdate-4}`, `${tempdate-3}`, `${tempdate-2}`, `${tempdate-1}`, `${tempdate}`];
+
+      } else if(week.classList.contains('active')){
+        xaxis=['Week 1', 'Week 2', 'Week 3', 'Week 4'];
+      } else {
+        xaxis=['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      }
+    }
+  
+    function chart_draw(){
+      const gradient = ctx.createLinearGradient(0, 0, 0, 200);
+      gradient.addColorStop(0, 'rgba(55, 178, 77, 0.2)');
+      gradient.addColorStop(1, 'rgba(55, 178, 77, 0)');
+      chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: xaxis,
+            datasets: [{
+                data: yaxis,
+                fill: true,
+                backgroundColor: gradient,
+                borderColor: '#37b24d',
+                borderWidth: 2,
+                tension: 0.4,
+                pointRadius: 0,
+                pointHoverRadius: 6,
+                pointHoverBackgroundColor: '#37b24d',
+                pointHoverBorderColor: '#fff',
+                pointHoverBorderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                    backgroundColor: 'white',
+                    titleColor: '#333',
+                    bodyColor: '#333',
+                    borderColor: '#e9ecef',
+                    borderWidth: 1,
+                    padding: 12,
+                    displayColors: false,
+                    callbacks: {
+                        label: function(context) {
+                            return '₹ ' + context.parsed.y.toLocaleString();
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        color: '#999',
+                        font: {
+                            size: 12
+                        }
+                    }
+                },
+                y: {
+                    display: false
+                }
+            },
+            interaction: {
+                intersect: false,
+                mode: 'index'
+            }
+        }
+    });
+    }
+    chart_draw();
+    </script>
+</body>
+</html>
